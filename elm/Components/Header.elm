@@ -1,7 +1,7 @@
-module Components.Header.Index exposing (view)
+module Components.Header exposing (view)
 
-import Html exposing (nav, div, button, text, a)
-import Html.Attributes exposing (class, classList, href)
+import Html exposing (img, nav, div, button, text, a)
+import Html.Attributes exposing (src, class, classList, href)
 
 
 view { isLoggedIn, firstName, lastName } =
@@ -10,13 +10,13 @@ view { isLoggedIn, firstName, lastName } =
   in
     navigator [
       navItemDefault [
-        text "Logo"
+        logo
       ],
       navItemDefault [
         a [ href "#/" ] [ text "Counter" ]
       ],
       navItemDefault [
-        a [ href "#/about" ] [ text "About" ]
+        a [ href "#/about" ] [ text "About Us" ]
       ],
       div [ class "flex flex-auto" ] [],
       navItemDefault [
@@ -28,6 +28,9 @@ view { isLoggedIn, firstName, lastName } =
         button [ class "btn btn-primary bg-red white" ] [ text "Logout" ]
       ]
     ]
+
+
+logo = img [ src "//placehold.it/100x50" ] []
 
 
 navigatorItem { isVisible, mr, ml } children =

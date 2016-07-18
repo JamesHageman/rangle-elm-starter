@@ -2,6 +2,7 @@ module Routes exposing (..)
 
 import RouteParser exposing (Matcher, static)
 
+
 type Route
   = Home
   | About
@@ -15,20 +16,7 @@ routeParsers =
   ]
 
 
-decode : String -> Route
-decode path =
+match : String -> Route
+match path =
   RouteParser.match routeParsers path
     |> Maybe.withDefault NotFound
-
-
-encode : Route -> String
-encode route =
-  case route of
-    Home ->
-      "/"
-
-    About ->
-      "/about"
-
-    NotFound ->
-      ""

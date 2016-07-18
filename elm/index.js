@@ -12,14 +12,14 @@ app.ports.setPath.subscribe((path) => {
 });
 
 const sendPath = () => {
+  if (window.location.hash === '') {
+    window.location.hash = '/';
+  }
+
   const path = window.location.hash.slice(1);
   app.ports.pathUpdates.send(path);
 };
 
 window.onhashchange = sendPath;
-
-if (window.location.hash === '') {
-  window.location.hash = '/';
-}
 
 setTimeout(sendPath, 0);
