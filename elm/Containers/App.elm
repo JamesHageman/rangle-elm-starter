@@ -9,13 +9,19 @@ import Routes
 import Components.Header as Header
 import Components.About as About
 import Components.Counter as Counter
+import Components.LoginForm as LoginForm
+import Components.UI.Modal as Modal
 
 
 view : Model -> Html Msg
 view model =
   let
+    isLoggedIn = case model.user of
+      Just user -> True
+      Nothing -> False
+
     headerProps = {
-      isLoggedIn = True,
+      isLoggedIn = isLoggedIn,
       firstName = "James",
       lastName = "Hageman"
     }
@@ -23,7 +29,10 @@ view model =
     div [] [
       Header.view headerProps,
       main' [] [
-        matchRoute model.route model
+        if isLoggedIn then
+          (matchRoute model.route model)
+        else
+          (loginModal model)
       ]
     ]
 
@@ -42,3 +51,10 @@ matchRoute route model =
         p [] [ text "Not found" ]
       , a [ href "#/" ] [ text "Go Home" ]
       ]
+
+
+loginModal : Model -> Html Msg
+loginModal model =
+  Modal.view [
+    Html.App.map Types.LoginFormMsg (LoginForm.view model.loginForm)
+  ]
