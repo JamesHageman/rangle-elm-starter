@@ -5,9 +5,15 @@ import Components.Counter as Counter
 import Components.LoginForm as LoginForm
 
 
-type alias User =
+type alias UserProfile =
   { firstName : String
   , lastName : String
+  }
+
+type alias User =
+  { id : String
+  , token : String
+  , profile : UserProfile
   }
 
 
@@ -23,3 +29,5 @@ type Msg =
   | PathUpdated String
   | CounterMsg Counter.Msg
   | LoginFormMsg LoginForm.Msg
+  | LoginError String
+  | LoginSuccess User

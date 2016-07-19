@@ -1,7 +1,7 @@
-module Components.UI.Form exposing (label, input, group)
+module Components.UI.Form exposing (label, input, group, error)
 
 import Html exposing (Html, div, text)
-import Html.Attributes exposing (class, placeholder, type', name, value)
+import Html.Attributes exposing (class, name, type', name, value)
 import Html.Events exposing (onInput)
 
 
@@ -16,7 +16,7 @@ input : (String -> msg) -> String -> String -> String -> Html msg
 input inputMsg elementName elementType elementValue =
   Html.input
     [ class "block col-12 mb1 input"
-    , placeholder elementName
+    , name elementName
     , value elementValue
     , onInput inputMsg
     , type' elementType
@@ -26,3 +26,8 @@ input inputMsg elementName elementType elementValue =
 group : List (Html msg) -> Html msg
 group children =
   div [ class "py2" ] children
+
+
+error : List (Html msg) -> Html msg
+error children =
+  div [ class "bold black" ] children

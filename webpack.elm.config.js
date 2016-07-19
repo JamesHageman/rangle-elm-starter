@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const postcss = require('./webpack/postcss');
 const loaders = require('./webpack/loaders');
+const proxy = require('./server/webpack-dev-proxy');
 
 module.exports = {
   output: {
@@ -22,8 +23,9 @@ module.exports = {
   ],
 
   devServer: {
+    historyApiFallback: { index: '/' },
+    proxy: Object.assign({}, proxy(), { '/api/*': 'http://localhost:3000' }),
     inline: true,
-    progress: true,
   },
 
   module: {
