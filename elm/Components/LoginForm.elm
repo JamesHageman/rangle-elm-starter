@@ -5,6 +5,7 @@ import Html.Attributes exposing (class, type')
 import Html.Events exposing (onSubmit, onClick)
 
 import Components.UI.Form exposing (input, label, group, error)
+import Components.UI.Alert as Alert
 import String
 
 
@@ -52,14 +53,20 @@ update msg model =
             (model, Nothing)
 
 
-view : Model -> Html Msg
-view model =
+view : Maybe String -> Model -> Html Msg
+view errorMessage model =
   let
     validations = validate model
     usernameMsg = validationMessage validations.username
     passwordMsg = validationMessage validations.password
   in
     form [ onSubmit Submit ] [
+      case errorMessage of
+        Nothing ->
+          text ""
+
+        Just msg ->
+          Alert.view "error" [ text msg ],
       group
         [ label "Username"
         , input ChangeUsername "Username" "text" model.username

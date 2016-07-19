@@ -7,6 +7,7 @@ import Components.Counter as Counter
 import Components.LoginForm as LoginForm
 import Api.Session exposing (login)
 import Task exposing (..)
+import Dict exposing (Dict)
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -27,25 +28,53 @@ update msg model =
         effects = case submitModel of
           Just { username, password } ->
             [
-              Task.perform
-                Types.LoginError
+              requestSequence
+                "login"
                 Types.LoginSuccess
                 (login (username, password))
             ]
 
           Nothing ->
             []
-      in
-        { model | loginForm = formModel } ! effects
+    in
+      { model | loginForm = formModel } ! effects
 
     Types.LoginSuccess user ->
       { model | user = Just user } ! []
 
-    Types.LoginError msg ->
-      let _ = Debug.log "LoginError" msg in
-        model ! []
+    Types.RequestMsg msg ->
+      let
+        (errors, effects) = updateErrors msg model.errors
+      in
+        { model | errors = errors } ! [ effects ]
+
+    Types.Logout ->
+      { model | user = Nothing } ! []
+
+
+updateErrors : Types.Request -> Dict String String -> (Dict String String, Cmd Msg)
+updateErrors msg errors =
+  case msg of
+    Types.Error key errorMsg ->
+      Dict.insert key errorMsg errors ! []
+
+    Types.Success key appMsg ->
+      Dict.remove key errors ! [ dispatch appMsg ]
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
   Sub.batch [ Location.pathUpdates Types.PathUpdated ]
+
+
+dispatch : msg -> Cmd msg
+dispatch msg =
+  Task.perform identity identity (Task.succeed msg)
+
+
+requestSequence : String -> (a -> Msg) -> Task String a -> Cmd Msg
+requestSequence key successActionCreator task =
+  Task.perform
+    (Types.RequestMsg << Types.Error key)
+    (Types.RequestMsg << Types.Success key << successActionCreator)
+    task

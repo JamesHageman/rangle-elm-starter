@@ -56,5 +56,13 @@ login (username, password) =
 
     url = "/api/auth/login"
   in
-    Http.post decodeUser url body
-      |> Task.mapError loginErrMsg
+    Http.send
+      Http.defaultSettings
+      { verb = "post"
+      , headers =
+        [ ("Content-Type", "application/json") ]
+      , url = url
+      , body = body
+      }
+        |> Http.fromJson (Json.at [ "meta" ] decodeUser)
+        |> Task.mapError loginErrMsg

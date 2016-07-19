@@ -12,29 +12,32 @@ import Components.Counter as Counter
 import Components.LoginForm as LoginForm
 import Components.UI.Modal as Modal
 
+import Dict exposing (Dict)
+
 
 view : Model -> Html Msg
 view model =
   let
-    isLoggedIn = case model.user of
-      Just user -> True
-      Nothing -> False
-
-    headerProps = {
-      isLoggedIn = isLoggedIn,
-      firstName = "James",
-      lastName = "Hageman"
-    }
+    _ = Debug.log "model" model
   in
-    div [] [
-      Header.view headerProps,
-      main' [] [
-        if isLoggedIn then
-          (matchRoute model.route model)
-        else
-          (loginModal model)
-      ]
-    ]
+    case model.user of
+      Just user ->
+        let headerProps =
+          { isLoggedIn = True
+          , firstName = user.profile.firstName
+          , lastName = user.profile.lastName
+          , onLogout = Types.Logout
+          }
+        in
+          div [] [
+            Header.view headerProps,
+            main' [] [
+              matchRoute model.route model
+            ]
+          ]
+
+      Nothing ->
+        loginModal model
 
 
 matchRoute : Routes.Route -> Model -> Html Msg
@@ -55,6 +58,9 @@ matchRoute route model =
 
 loginModal : Model -> Html Msg
 loginModal model =
-  Modal.view [
-    Html.App.map Types.LoginFormMsg (LoginForm.view model.loginForm)
-  ]
+  let
+    loginError = Dict.get "login" model.errors
+  in
+    Modal.view [
+      Html.App.map Types.LoginFormMsg (LoginForm.view loginError model.loginForm)
+    ]

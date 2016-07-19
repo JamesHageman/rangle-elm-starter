@@ -1,10 +1,20 @@
 module Components.Header exposing (view)
 
-import Html exposing (img, nav, div, button, text, a)
+import Html exposing (Html, img, nav, div, button, text, a)
 import Html.Attributes exposing (src, class, classList, href)
+import Html.Events exposing (onClick)
 
 
-view { isLoggedIn, firstName, lastName } =
+type alias HeaderProps msg =
+  { isLoggedIn : Bool
+  , firstName : String
+  , lastName : String
+  , onLogout : msg
+  }
+
+
+view : HeaderProps msg -> Html msg
+view { isLoggedIn, firstName, lastName, onLogout } =
   let
     navItemDefault = navigatorItem { isVisible = isLoggedIn, mr = True, ml = False }
   in
@@ -25,14 +35,20 @@ view { isLoggedIn, firstName, lastName } =
         ]
       ],
       navItemDefault [
-        button [ class "btn btn-primary bg-red white" ] [ text "Logout" ]
+        button
+          [ class "btn btn-primary bg-red white"
+          , onClick onLogout
+          ] [ text "Logout" ]
       ]
     ]
 
 
+logo : Html msg
 logo = img [ src "//placehold.it/100x50" ] []
 
 
+navigatorItem : { isVisible : Bool, mr : Bool, ml : Bool} ->
+  List (Html msg) -> Html msg
 navigatorItem { isVisible, mr, ml } children =
   div [
     classList [
@@ -44,5 +60,6 @@ navigatorItem { isVisible, mr, ml } children =
   ] children
 
 
+navigator : List (Html msg) -> Html msg
 navigator children =
   nav [ class "flex items-center p1 bg-white border-bottom" ] children
