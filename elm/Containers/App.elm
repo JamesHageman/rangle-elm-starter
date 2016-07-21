@@ -17,27 +17,24 @@ import Dict exposing (Dict)
 
 view : Model -> Html Msg
 view model =
-  let
-    _ = Debug.log "model" model
-  in
-    case model.user of
-      Just user ->
-        let headerProps =
-          { isLoggedIn = True
-          , firstName = user.profile.firstName
-          , lastName = user.profile.lastName
-          , onLogout = Types.Logout
-          }
-        in
-          div [] [
-            Header.view headerProps,
-            main' [] [
-              matchRoute model.route model
-            ]
+  case model.user of
+    Just user ->
+      let headerProps =
+        { isLoggedIn = True
+        , firstName = user.profile.firstName
+        , lastName = user.profile.lastName
+        , onLogout = Types.Logout
+        }
+      in
+        div [] [
+          Header.view headerProps,
+          main' [] [
+            matchRoute model.route model
           ]
+        ]
 
-      Nothing ->
-        loginModal model
+    Nothing ->
+      loginModal model
 
 
 matchRoute : Routes.Route -> Model -> Html Msg
