@@ -1,7 +1,7 @@
 module Update exposing (..)
 
 import Types exposing (Model, Msg)
-import Location
+import Ports
 import Routes
 import Components.Counter as Counter
 import Components.LoginForm as LoginForm
@@ -17,7 +17,7 @@ update msg model =
       { model | route = Routes.match path } ! []
 
     Types.SetPath path ->
-      model ! [ Location.setPath path ]
+      model ! [ Ports.setPath path ]
 
     Types.CounterMsg msg ->
       { model | counter = (Counter.update msg model.counter) } ! []
@@ -40,7 +40,7 @@ update msg model =
       { model | loginForm = formModel } ! effects
 
     Types.LoginSuccess user ->
-      { model | user = Just user } ! []
+      { model | user = Just user } ! [ Ports.setSession (Just user) ]
 
     Types.RequestMsg msg ->
       let
@@ -49,10 +49,11 @@ update msg model =
         { model | errors = errors } ! [ effects ]
 
     Types.Logout ->
-      { model | user = Nothing } ! []
+      { model | user = Nothing } ! [ Ports.setSession Nothing ]
 
 
-updateErrors : Types.Request -> Dict String String -> (Dict String String, Cmd Msg)
+updateErrors : Types.Request -> Dict String String ->
+  (Dict String String, Cmd Msg)
 updateErrors msg errors =
   case msg of
     Types.Error key errorMsg ->
@@ -64,7 +65,10 @@ updateErrors msg errors =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Sub.batch [ Location.pathUpdates Types.PathUpdated ]
+  Sub.batch
+    [ Ports.pathUpdates Types.PathUpdated
+    , Ports.sessionInit Types.LoginSuccess
+    ]
 
 
 dispatch : msg -> Cmd msg

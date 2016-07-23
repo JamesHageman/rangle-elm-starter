@@ -69,12 +69,12 @@ view errorMessage model =
           Alert.view "error" [ text msg ],
       group
         [ label "Username"
-        , input ChangeUsername "Username" "text" model.username
+        , input ChangeUsername "username" "text" model.username
         , usernameMsg
         ],
       group
         [ label "Password"
-        , input ChangePassword "Password" "password" model.password
+        , input ChangePassword "password" "password" model.password
         , passwordMsg
         ],
       group

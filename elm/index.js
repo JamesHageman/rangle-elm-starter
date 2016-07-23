@@ -23,3 +23,26 @@ const sendPath = () => {
 window.onhashchange = sendPath;
 
 setTimeout(sendPath, 0);
+
+const storageKey = 'rangle-elm-starter';
+
+app.ports.setSession.subscribe((user) => {
+  if (!user) {
+    localStorage.removeItem(storageKey);
+    return;
+  }
+
+  localStorage.setItem(
+    storageKey,
+    JSON.stringify({ user })
+  );
+});
+
+const sendSession = () => {
+  const data = localStorage.getItem(storageKey);
+  if (!data) return;
+  const { user } = JSON.parse(data);
+  app.ports.sessionInit.send(user);
+};
+
+setTimeout(sendSession, 0);
