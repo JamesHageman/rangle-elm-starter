@@ -1,6 +1,6 @@
-module Update exposing (..)
+module Update exposing (update, subscriptions)
 
-import Types exposing (Model, Msg)
+import Types exposing (Model, Msg(..))
 import Ports
 import Routes
 import Components.Counter as Counter
@@ -13,16 +13,16 @@ import Dict exposing (Dict)
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Types.PathUpdated path ->
+        PathUpdated path ->
             { model | route = Routes.match path } ! []
 
-        Types.SetPath path ->
+        SetPath path ->
             model ! [ Ports.setPath path ]
 
-        Types.CounterMsg msg ->
+        CounterMsg msg ->
             { model | counter = (Counter.update msg model.counter) } ! []
 
-        Types.LoginFormMsg msg ->
+        LoginFormMsg msg ->
             let
                 ( formModel, submitModel ) =
                     LoginForm.update msg model.loginForm
@@ -32,7 +32,7 @@ update msg model =
                         Just { username, password } ->
                             [ requestSequence
                                 "login"
-                                Types.LoginSuccess
+                                LoginSuccess
                                 (login ( username, password ))
                             ]
 
@@ -41,17 +41,17 @@ update msg model =
             in
                 { model | loginForm = formModel } ! effects
 
-        Types.LoginSuccess user ->
+        LoginSuccess user ->
             { model | user = Just user } ! [ Ports.setSession (Just user) ]
 
-        Types.RequestMsg msg ->
+        RequestMsg msg ->
             let
                 ( errors, effects ) =
                     updateErrors msg model.errors
             in
                 { model | errors = errors } ! [ effects ]
 
-        Types.Logout ->
+        Logout ->
             { model | user = Nothing } ! [ Ports.setSession Nothing ]
 
 
@@ -68,14 +68,6 @@ updateErrors msg errors =
             Dict.remove key errors ! [ dispatch appMsg ]
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.batch
-        [ Ports.pathUpdates Types.PathUpdated
-        , Ports.sessionInit Types.LoginSuccess
-        ]
-
-
 dispatch : msg -> Cmd msg
 dispatch msg =
     Task.perform identity identity (Task.succeed msg)
@@ -84,6 +76,14 @@ dispatch msg =
 requestSequence : String -> (a -> Msg) -> Task String a -> Cmd Msg
 requestSequence key successActionCreator task =
     Task.perform
-        (Types.RequestMsg << Types.Error key)
-        (Types.RequestMsg << Types.Success key << successActionCreator)
+        (RequestMsg << Types.Error key)
+        (RequestMsg << Types.Success key << successActionCreator)
         task
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.batch
+        [ Ports.pathUpdates Types.PathUpdated
+        , Ports.sessionInit Types.LoginSuccess
+        ]
