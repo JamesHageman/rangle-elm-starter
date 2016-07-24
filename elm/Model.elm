@@ -9,13 +9,14 @@ import Dict exposing (Dict)
 
 initialModel : Model
 initialModel =
-  { user = Nothing
-  , counter = Counter.init
-  , route = Routes.Home
-  , loginForm = LoginForm.init
-  , errors = Dict.empty
-  }
+    { user = Nothing
+    , counter = Counter.init
+    , route = Routes.Home
+    , loginForm = LoginForm.init
+    , errors = Dict.empty
+    }
 
 
-init : (Model, Cmd Msg)
-init = (initialModel, Cmd.none)
+init : ( Model, Cmd Msg )
+init =
+    ( initialModel, Cmd.none )
