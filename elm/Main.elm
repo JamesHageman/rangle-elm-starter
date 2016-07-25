@@ -3,7 +3,7 @@ module Main exposing (..)
 import Html.App exposing (program)
 import Model exposing (init)
 import Update exposing (update, subscriptions)
-import Containers.App exposing (view)
+import View exposing (view)
 import Types
 
 

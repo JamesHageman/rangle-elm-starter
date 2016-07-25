@@ -1,4 +1,4 @@
-module Containers.App exposing (view)
+module View exposing (view)
 
 import Types exposing (Model, Msg)
 import Html exposing (Html, div, a, p, main', text)
