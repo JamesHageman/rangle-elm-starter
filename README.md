@@ -1,6 +1,6 @@
 # unofficial rangle-elm-starter
 
-This repo is a port of Rangle.io's react-redux-starter to elm. 
+This repo is a port of Rangle.io's [react-redux-starter](https://github.com/rangle/react-redux-starter) to elm. 
 It was forked directly from the react-redux-starter repo and still contains the 
 redux implementation.
 
