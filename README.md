@@ -1,79 +1,39 @@
-[![Circle CI](https://circleci.com/gh/rangle/react-redux-starter.svg?style=svg)](https://circleci.com/gh/rangle/react-redux-starter) [![Stories in Ready](https://badge.waffle.io/rangle/rangle-starter.png?label=ready&title=Ready)](https://waffle.io/rangle/rangle-starter)
+# unofficial rangle-elm-starter
 
-# react-redux-starter
+This repo is a port of Rangle.io's react-redux-starter to elm. 
+It was forked directly from the react-redux-starter repo and still contains the 
+redux implementation.
 
-> Rangle.io official React + Redux starter
+This is a WIP :)
 
 ## Getting Started
 
-Use our [starter script](https://www.npmjs.com/package/rangle-starter), with
-`react-redux-starter` as the `techStack` argument.
-
-## npm scripts
-
-### Dev
-```bash
-$ npm run dev
-```
-
-This runs a development mode server with live reload etc.
-
-Open `http://localhost:8080` in your browser.
-
-### Production
+First, install elm globally:
 
 ```bash
-npm run build
-npm start
+npm install -g elm
 ```
 
-This runs a production-ready express server that serves up a bundled and
-minified version of the client.
+Then install all of the dependencies:
 
-Open `http://localhost:8080` in your browser.
-
-### Tests
-
-#### Single Run
 ```bash
-$ npm run test
+git clone https://github.com/JamesHageman/rangle-elm-starter
+npm install
+elm package install
 ```
 
-#### Watch Files
+And start the development server:
+
 ```bash
-$ npm run test:watch
+npm run dev:elm
 ```
 
-#### Coverage
-Code coverage is generated automatically after a `npm run test` run (but not
-`test:watch`).
+And open `localhost:8081` in your browser.
 
-#### Connecting to remote APIs
 
-Both the devmode and production servers provide a way to proxy requests to
-remote HTTP APIs.  This can be useful for working around CORS issues when
-developing your software.
+### TODO
+- Production builds
+- Unit tests with elm-test
+- e2e tests with robot
+- Remove the redux implementation
 
-Edit [this file](server/proxy-config.js) to mount such APIs at a given path.
-
-## Improvements
-
-This is an initial version of this setup and will be expanded in the future. Refer to the [issues section](https://github.com/rangle/rangle-starter/issues) to see what needs to be done, or create a [new one](https://github.com/rangle/rangle-starter/issues/new).
-
-Issues for this particular starter project are tagged with the 'es6-react' label.
-
-## If something doesn't work
-
-We centralize issue management for all rangle starters in the [rangle-starter](https://github.com/rangle/rangle-starter) repository, to help us keep things consistent.
-
-Refer to the [issues section](https://github.com/rangle/rangle-starter/issues) to see if this has already been logged. Otherwise create a [new issue](https://github.com/rangle/rangle-starter/issues/new).
-
-Be sure to tag your new issue with the 'es6-react' label so we can see which starter you're filing it for.
-
-## License
-
-Copyright (c) 2015 rangle.io
-
-[MIT License][MIT]
-
-[MIT]: ./LICENSE "Mit License"
