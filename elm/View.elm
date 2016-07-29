@@ -46,10 +46,7 @@ matchRoute route model =
             About.view
 
         Routes.NotFound ->
-            div []
-                [ p [] [ text "Not found" ]
-                , a [ href "#/" ] [ text "Go Home" ]
-                ]
+            notFound
 
 
 loginModal : Model -> Html Msg
@@ -64,3 +61,11 @@ loginModal model =
                 (LoginForm.view loginError model.loginForm)
     in
         Modal.view [ loginForm ]
+
+
+notFound : Html Msg
+notFound =
+    div []
+        [ p [] [ text "Not found" ]
+        , a [ href "#/" ] [ text "Go Home" ]
+        ]
