@@ -27,19 +27,18 @@ update msg model =
                 ( formModel, submitModel ) =
                     LoginForm.update msg model.loginForm
 
-                effects =
+                effect =
                     case submitModel of
                         Just { username, password } ->
-                            [ requestSequence
+                            requestSequence
                                 "login"
                                 LoginSuccess
                                 (login ( username, password ))
-                            ]
 
                         Nothing ->
-                            []
+                            Cmd.none
             in
-                { model | loginForm = formModel } ! effects
+                { model | loginForm = formModel } ! [ effect ]
 
         LoginSuccess user ->
             { model | user = Just user } ! [ Ports.setSession (Just user) ]
