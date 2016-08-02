@@ -6,6 +6,9 @@ import Html.Events exposing (onClick)
 import Components.UI.Container as Container
 
 
+-- Model
+
+
 type alias Model =
     Int
 
@@ -20,6 +23,10 @@ type Msg
     | Decrement
 
 
+
+-- Update
+
+
 update : Msg -> Model -> Model
 update msg model =
     case msg of
@@ -28,6 +35,10 @@ update msg model =
 
         Decrement ->
             model - 1
+
+
+
+-- View
 
 
 view : Model -> Html Msg

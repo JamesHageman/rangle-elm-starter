@@ -8,6 +8,9 @@ import Components.UI.Alert as Alert
 import String
 
 
+-- Model
+
+
 type alias Model =
     { username : String
     , password : String
@@ -28,6 +31,10 @@ type Msg
 init : Model
 init =
     Model "" ""
+
+
+
+-- Update
 
 
 update : Msg -> Model -> ( Model, Maybe SubmitModel )
@@ -53,6 +60,10 @@ update msg model =
 
                     _ ->
                         ( model, Nothing )
+
+
+
+-- View
 
 
 view : Maybe String -> Model -> Html Msg
